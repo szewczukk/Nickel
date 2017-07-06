@@ -9,7 +9,14 @@ parser.add_argument("command", help="\"check\" for print all tasks or \"add\" to
 
 arguments = parser.parse_args()
 if arguments.command == "check":
-    tree = ElementTree.parse("~/nickel/tasks.xml")
+    tree = ElementTree.parse("/home/.nickel/tasks.xml")
+    root = tree.getroot()
+    iterator = 0
+
+    print("Here is all tasks created:")
+    for task in root.findall("task"):
+        iterator += 1
+        print(str(iterator) + "        " + task.text)
 
 if arguments.command == "init":
     if not path.exists("/home/.nickel"):
@@ -20,4 +27,8 @@ if arguments.command == "init":
 
     print("Path initialized!")
 elif arguments.command == "add":
-    print ("Adding")
+    tree = ElementTree.parse("/home/.nickel/tasks.xml")
+    root = tree.getroot()
+
+    task = ElementTree.SubElement(root, "task")
+    task.text = raw_input()
