@@ -5,7 +5,9 @@ from xml.etree import ElementTree
 from os import makedirs, path
 
 parser = ArgumentParser(description="Type command")
-parser.add_argument("command", help="\"check\" for print all tasks or \"add\" to add new task")
+parser.add_argument("command", help="\"check\" for print all tasks or "
+                                    "\"add\" to add new task "
+                                    "\"init\" for creating new empty XML task file in /home/.nickel dir")
 
 arguments = parser.parse_args()
 if arguments.command == "check":
@@ -31,6 +33,6 @@ elif arguments.command == "add":
     root = tree.getroot()
 
     new_task = ElementTree.Element("task")
-    new_task.text = raw_input()
+    new_task.text = raw_input("Type new task: ")
     root.append(new_task)
     tree.write("/home/.nickel/tasks.xml")
