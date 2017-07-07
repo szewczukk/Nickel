@@ -2,7 +2,7 @@
 
 from argparse import *
 from xml.etree import ElementTree
-from os import makedirs, system, path
+from os import makedirs, path
 
 parser = ArgumentParser(description="Type command")
 parser.add_argument("command", help="\"check\" for print all tasks or \"add\" to add new task")
@@ -23,12 +23,14 @@ if arguments.command == "init":
         makedirs("/home/.nickel")
 
     with open("/home/.nickel/tasks.xml", "w") as f:
-        f.write("<?xml version=\"1.0\"?>\n<tasks> \n</tasks>")
+        f.write("<?xml version=\"1.0\"?>\n<tasks>\n</tasks>")
 
     print("Path initialized!")
 elif arguments.command == "add":
     tree = ElementTree.parse("/home/.nickel/tasks.xml")
     root = tree.getroot()
 
-    task = ElementTree.SubElement(root, "task")
-    task.text = raw_input()
+    new_task = ElementTree.Element("task")
+    new_task.text = raw_input()
+    root.append(new_task)
+    tree.write("/home/.nickel/tasks.xml")
