@@ -5,8 +5,8 @@ from xml.etree import ElementTree
 from os import makedirs, path
 
 parser = ArgumentParser(description="Type command")
-parser.add_argument("command", help="\"check\" for print all tasks or "
-                                    "\"add\" to add new task "
+parser.add_argument("command", help="\"check\" for print all tasks or \n"
+                                    "\"add\" to add new task \n"
                                     "\"init\" for creating new empty XML task file in /home/.nickel dir")
 
 arguments = parser.parse_args()
@@ -24,8 +24,10 @@ if arguments.command == "init":
     if not path.exists("/home/.nickel"):
         makedirs("/home/.nickel")
 
-    with open("/home/.nickel/tasks.xml", "w") as f:
-        f.write("<?xml version=\"1.0\"?>\n<tasks>\n</tasks>")
+    root = ElementTree.Element("root")
+
+    tree = ElementTree.ElementTree(root)
+    tree.write("/home/.nickel/tasks.xml")
 
     print("Path initialized!")
 elif arguments.command == "add":
