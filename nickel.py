@@ -6,9 +6,10 @@ from os import makedirs, path
 
 parser = ArgumentParser(description="Type command")
 parser.add_argument("command")
-parser.add_argument("project")
+parser.add_argument("--project", default="None")
 
 arguments = parser.parse_args()
+
 if arguments.command == "check":
     tree = ElementTree.parse(path.expanduser("~") + "/.nickel/tasks.xml")
     root = tree.getroot()
@@ -21,12 +22,14 @@ if arguments.command == "check":
         project = str(task.get("project"))
         given_project = arguments.project
 
-        print(given_project)
-
-        if project != "None":
-            print(str(iterator) + ": " + task.text + " : " + project)
+        if given_project != "None":
+            if project == given_project:
+                print(str(iterator) + " : " + task.text)
         else:
-            print(str(iterator) + ": " + task.text + " : ")
+            if project != "None":
+                print(str(iterator) + ": " + task.text + " : " + project)
+            else:
+                print(str(iterator) + ": " + task.text + " : ")
 
 if arguments.command == "init":
     if not path.exists(path.expanduser("~") + "/.nickel"):
@@ -45,4 +48,4 @@ elif arguments.command == "add":
     new_task = ElementTree.Element("task", {"project": arguments.project})
     new_task.text = raw_input("Type new task: ")
     root.append(new_task)
-    tree.write("/home/User/.nickel/tasks.xml")
+    tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
