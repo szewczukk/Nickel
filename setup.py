@@ -7,6 +7,6 @@ setup(
     author_email="dmitro.szewczuk@gmail.com",
     url="https://github.com/bjornus/Nickel",
     scripts=[
-        "nickel.py"
+        "scripts/nickel.py"
     ],
 )
