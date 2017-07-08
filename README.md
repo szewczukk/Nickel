@@ -35,3 +35,11 @@ If you want to check some project
  Or if you want to just check all tasks
  
      $ nickel.py check
+
+## Removing task
+
+     $ nickel.py remove --task=ID_TASK
+     
+## Completing task
+
+     $ nickel.py complete --task=ID_TASK
