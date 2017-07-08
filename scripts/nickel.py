@@ -25,11 +25,11 @@ if arguments.command == "check":
 
         if given_project != "None":
             if project == given_project:
-                print(str(iterator) + " : " + task.text)
+                print(str(iterator) + ": " + str(task.text) + " : " + str(task.get("status")))
         else:
             if project == "None":
                 project = ""
-                print(str(iterator) + ": " + str(task.text) + " : " + str(project) + " : " + str(task.get("status")))
+            print(str(iterator) + ": " + str(task.text) + " : " + str(project) + " : " + str(task.get("status")))
 
 if arguments.command == "init":
     if not path.exists(path.expanduser("~") + "/.nickel"):
