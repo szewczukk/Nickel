@@ -27,10 +27,9 @@ if arguments.command == "check":
             if project == given_project:
                 print(str(iterator) + " : " + task.text)
         else:
-            if project != "None":
-                print(str(iterator) + ": " + task.text + " : " + project)
-            else:
-                print(str(iterator) + ": " + task.text + " : ")
+            if project == "None":
+                project = ""
+                print(str(iterator) + ": " + str(task.text) + " : " + str(project) + " : " + str(task.get("status")))
 
 if arguments.command == "init":
     if not path.exists(path.expanduser("~") + "/.nickel"):
@@ -56,12 +55,26 @@ elif arguments.command == "remove":
                 root.remove(task)
                 tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
                 break
+elif arguments.command == "complete":
+    if arguments.task == 0:
+        print("Add --task argument!")
+    else:
+        tree = ElementTree.parse(path.expanduser("~") + "/.nickel/tasks.xml")
+        root = tree.getroot()
+
+        iterator = 0
+        for task in root.findall("task"):
+            iterator += 1
+            if iterator == arguments.task:
+                task.set("status", "Completed!")
+                tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
+                break
 
 elif arguments.command == "add":
     tree = ElementTree.parse(path.expanduser("~") + "/.nickel/tasks.xml")
     root = tree.getroot()
 
-    new_task = ElementTree.Element("task", {"project": arguments.project})
+    new_task = ElementTree.Element("task", {"project": arguments.project, "status": "In progress"})
     new_task.text = raw_input("Type new task: ")
     root.append(new_task)
     tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
