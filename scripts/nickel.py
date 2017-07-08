@@ -7,6 +7,7 @@ from os import makedirs, path
 parser = ArgumentParser(description="Type command")
 parser.add_argument("command")
 parser.add_argument("--project", default="None")
+parser.add_argument("--task", default=0, type=int)
 
 arguments = parser.parse_args()
 
@@ -41,6 +42,21 @@ if arguments.command == "init":
     tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
 
     print("Path initialized!")
+elif arguments.command == "remove":
+    if arguments.task == 0:
+        print("Add --task argument!")
+    else:
+        tree = ElementTree.parse(path.expanduser("~") + "/.nickel/tasks.xml")
+        root = tree.getroot()
+
+        iterator = 0
+        for task in root.findall("task"):
+            iterator += 1
+            if iterator == arguments.task:
+                root.remove(task)
+                tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
+                break
+
 elif arguments.command == "add":
     tree = ElementTree.parse(path.expanduser("~") + "/.nickel/tasks.xml")
     root = tree.getroot()
