@@ -32,9 +32,8 @@ if arguments.command == "check":
         if given_project != "None":
             if project == given_project:
                 print(str(iterator) + ": " + str(task.text) + " : " + status)
-        else:
-            if project == "None":
-                project = ""
+        elif project == "None":
+            project = ""
             print(str(iterator) + ": " + str(task.text) + " : " + str(project) + " : " + status)
 
 if arguments.command == "init":
