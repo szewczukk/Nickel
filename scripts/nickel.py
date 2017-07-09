@@ -47,6 +47,7 @@ if arguments.command == "init":
     tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
 
     print('\x1b[6;30;42m' + 'Path initialized!' + '\x1b[0m')
+
 elif arguments.command == "remove":
     if arguments.task == 0:
         print("Add --task argument!")
@@ -62,6 +63,7 @@ elif arguments.command == "remove":
                 tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
                 print('\x1b[6;30;42m' + 'Removed!' + '\x1b[0m')
                 break
+
 elif arguments.command == "complete":
     if arguments.task == 0:
         print("Add --task argument!")
@@ -87,3 +89,19 @@ elif arguments.command == "add":
     root.append(new_task)
     tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
     print('\x1b[6;30;42m' + 'Added!' + '\x1b[0m')
+
+elif arguments.command == "undone":
+    if arguments.task == 0:
+        print("Add --task argument!")
+    else:
+        tree = ElementTree.parse(path.expanduser("~") + "/.nickel/tasks.xml")
+        root = tree.getroot()
+
+        iterator = 0
+        for task in root.findall("task"):
+            iterator += 1
+            if iterator == arguments.task:
+                task.set("status", "Progress")
+                tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
+                print('\x1b[6;30;42m' + 'Completed!' + '\x1b[0m')
+                break

@@ -43,3 +43,7 @@ If you want to check some project
 ## Completing task
 
      $ nickel.py complete --task=ID_TASK
+
+## Undone task (setting as in progress)
+
+    $ nickel.py undone --task=ID_TASK
