@@ -23,13 +23,19 @@ if arguments.command == "check":
         project = str(task.get("project"))
         given_project = arguments.project
 
+        status = ""
+        if task.get("status") == "Completed":
+            status = "\x1b[6;30;42m" + "Completed!" + "\x1b[0m"
+        if task.get("status") == "Progress":
+            status = "\x1b[7;31;40m" + "In progress.." + "\x1b[0m"
+
         if given_project != "None":
             if project == given_project:
-                print(str(iterator) + ": " + str(task.text) + " : " + str(task.get("status")))
+                print(str(iterator) + ": " + str(task.text) + " : " + status)
         else:
             if project == "None":
                 project = ""
-            print(str(iterator) + ": " + str(task.text) + " : " + str(project) + " : " + str(task.get("status")))
+            print(str(iterator) + ": " + str(task.text) + " : " + str(project) + " : " + status)
 
 if arguments.command == "init":
     if not path.exists(path.expanduser("~") + "/.nickel"):
@@ -40,7 +46,7 @@ if arguments.command == "init":
     tree = ElementTree.ElementTree(root)
     tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
 
-    print("Path initialized!")
+    print('\x1b[6;30;42m' + 'Path initialized!' + '\x1b[0m')
 elif arguments.command == "remove":
     if arguments.task == 0:
         print("Add --task argument!")
@@ -54,6 +60,7 @@ elif arguments.command == "remove":
             if iterator == arguments.task:
                 root.remove(task)
                 tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
+                print('\x1b[6;30;42m' + 'Removed!' + '\x1b[0m')
                 break
 elif arguments.command == "complete":
     if arguments.task == 0:
@@ -66,15 +73,17 @@ elif arguments.command == "complete":
         for task in root.findall("task"):
             iterator += 1
             if iterator == arguments.task:
-                task.set("status", "Completed!")
+                task.set("status", "Completed")
                 tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
+                print('\x1b[6;30;42m' + 'Completed!' + '\x1b[0m')
                 break
 
 elif arguments.command == "add":
     tree = ElementTree.parse(path.expanduser("~") + "/.nickel/tasks.xml")
     root = tree.getroot()
 
-    new_task = ElementTree.Element("task", {"project": arguments.project, "status": "In progress"})
+    new_task = ElementTree.Element("task", {"project": arguments.project, "status": "Progress"})
     new_task.text = raw_input("Type new task: ")
     root.append(new_task)
     tree.write(path.expanduser("~") + "/.nickel/tasks.xml")
+    print('\x1b[6;30;42m' + 'Added!' + '\x1b[0m')
