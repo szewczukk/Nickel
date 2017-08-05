@@ -1,4 +1,7 @@
-# Nickel
+<p align="center">
+    <img src="logo.png" width="350">
+</p>
+
 Micro tasks library written in pure Python
 
 ## Installation
